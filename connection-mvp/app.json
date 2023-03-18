@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "scheme": "acme",
+    "web": {
+      "bundler": "metro"
+    },
+    "name": "connection-mvp",
+    "slug": "connection-mvp"
+  }
+}
