@@ -1,3 +1,5 @@
+// KAV is a special component to make sure the keyboard doesn't cover the input fields
+// TO is a component standing in as a button, but it can be traditionally styled (onPress is used on TO)
 import {
   Text,
   TextInput,
@@ -9,8 +11,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { styles } from "./login-styles";
+// This gives the router method, returning the current router, which can be used for navigation in the file-system
 import { useRouter } from "expo-router";
 
+// This screen is an exact copy of loved-one.js, but the words and future routings are changed
+// STE is a special attribute to TI to make the chars non-visible when inputting
+
+// Loved ones log in screen
 const lovedOne = () => {
   const router = useRouter();
 

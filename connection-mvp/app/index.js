@@ -14,10 +14,10 @@ export default function Page() {
       <Text style={styles.welcome}>
         Please choose one of the log in options below.
       </Text>
-      <Link href="/loved-one" style={styles.button}>
+      <Link href="/loved-one" style={[styles.button, styles.field]}>
         Loved One
       </Link>
-      <Link href="/staff" style={styles.button}>
+      <Link href="/staff" style={[styles.button, styles.field]}>
         Staff
       </Link>
     </View>
