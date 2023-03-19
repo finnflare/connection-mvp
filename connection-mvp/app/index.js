@@ -20,6 +20,9 @@ export default function Page() {
       <Link href="/logins/staff" style={[styles.button, styles.field]}>
         Staff
       </Link>
+      <Link href="/logins/admin" style={[styles.button, styles.field]}>
+        Admin
+      </Link>
     </View>
   );
 }

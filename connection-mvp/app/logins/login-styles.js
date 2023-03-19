@@ -58,6 +58,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#397478",
   },
+
+  // Style for administration information message
+  warning: {
+    fontSize: 12,
+    textAlign: "center",
+    width: 300,
+    color: "#cc5500",
+    top: 20,
+  },
 });
 
 export { styles };

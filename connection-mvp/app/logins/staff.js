@@ -1,3 +1,5 @@
+// KAV is a special component to make sure the keyboard doesn't cover the input fields
+// TO is a component standing in as a button, but it can be traditionally styled (onPress is used on TO)
 import {
   Text,
   TextInput,
@@ -9,13 +11,51 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { styles } from "./login-styles";
+// This gives the router method, returning the current router, which can be used for navigation in the file-system
 import { useRouter } from "expo-router";
+import { useState, useEffect } from "react";
+// Importing necessary firebase auth methods
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+// Using exported "auth" instance b/c, if don't, might not initialize firebase
+import { auth } from "../../firebaseConfig";
+// Importing necessary firestore methods
+import { collection, getDocs } from "firebase/firestore";
 
 // This screen is an exact copy of loved-one.js, but the words and future routings are changed
+// STE is a special attribute to TI to make the chars non-visible when inputting
 
 // Staff log in screen
 const staff = () => {
   const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  // Listening for user
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        router.push({
+          pathname: "../staff-in/staff-home",
+          params: { email: auth.email },
+        });
+      }
+    });
+
+    return unsubscribe;
+  }, []);
+
+  // Checking the log in credentials
+  const handleLogIn = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const mail = email;
+        const user = userCredential.user;
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+  };
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -27,20 +67,20 @@ const staff = () => {
           placeholder="username"
           placeholderTextColor="#d5e7e7"
           adjustFontSizeToFit
-          //value={}
-          //onChangeText{text =>}
+          value={email}
+          onChangeText={(text) => setEmail(text)}
         />
         <TextInput
           style={styles.input}
           placeholder="password"
           placeholderTextColor="#d5e7e7"
           adjustFontSizeToFit
-          //value={}
-          //onChangeText{text =>}
+          value={password}
+          onChangeText={(text) => setPassword(text)}
           secureTextEntry
         />
       </View>
-      <TouchableOpacity style={styles.field}>
+      <TouchableOpacity style={styles.field} onPress={handleLogIn}>
         <Text style={styles.button}>Log in</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.field} onPress={() => router.back()}>

@@ -1,10 +1,12 @@
 import { Link } from "expo-router";
-import { View, Image, Text } from "react-native";
+import { View, Text } from "react-native";
+import { useSearchParams } from "expo-router";
 
 const lovedOneHome = () => {
+  const { email } = useSearchParams();
   return (
     <View>
-      <Text>Loved One Home</Text>
+      <Text>{email}</Text>
     </View>
   );
 };

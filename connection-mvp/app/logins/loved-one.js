@@ -14,12 +14,14 @@ import { styles } from "./login-styles";
 // This gives the router method, returning the current router, which can be used for navigation in the file-system
 import { useRouter } from "expo-router";
 import { useState, useEffect } from "react";
-// Importing necessary firebase methods
+// Importing necessary firebase auth methods
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 // Using exported "auth" instance b/c, if don't, might not initialize firebase
 import { auth } from "../../firebaseConfig";
+// Importing necessary firestore methods
+import { collection, getDocs } from "firebase/firestore";
 
-// This screen is an exact copy of loved-one.js, but the words and future routings are changed
+// This screen is an exact copy of staff.js, but the words and future routings are changed
 // STE is a special attribute to TI to make the chars non-visible when inputting
 
 // Loved ones log in screen
@@ -32,7 +34,10 @@ const lovedOne = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        router.push("../loved-one-in/loved-one-home");
+        router.push({
+          pathname: "../loved-one-in/loved-one-home",
+          params: { email: auth.email },
+        });
       }
     });
 
@@ -43,7 +48,7 @@ const lovedOne = () => {
   const handleLogIn = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        console.log("in");
+        const mail = email;
         const user = userCredential.user;
       })
       .catch((error) => {
