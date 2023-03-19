@@ -4,36 +4,47 @@ import {
   View,
   KeyboardAvoidingView,
   StyleSheet,
+  Image,
+  Button,
+  TouchableOpacity,
 } from "react-native";
+import { styles } from "./login-styles";
+import { useRouter } from "expo-router";
 
 const staff = () => {
+  const router = useRouter();
+
   return (
-    <KeyboardAvoidingView style={styles.conatiner} behavior="padding">
-      <View style={styles.inputContainer}>
+    <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <Image style={styles.logo} source={require("./connection.png")} />
+      <Text style={styles.indicator}>Staff</Text>
+      <View style={styles.field}>
         <TextInput
-          placeholder="email"
+          style={styles.input}
+          placeholder="username"
+          placeholderTextColor="#d5e7e7"
+          adjustFontSizeToFit
           //value={}
           //onChangeText{text =>}
-          style={styles.input}
         />
         <TextInput
+          style={styles.input}
           placeholder="password"
+          placeholderTextColor="#d5e7e7"
+          adjustFontSizeToFit
           //value={}
           //onChangeText{text =>}
-          style={styles.input}
           secureTextEntry
         />
       </View>
+      <TouchableOpacity style={styles.field}>
+        <Text style={styles.button}>Log in</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.field} onPress={() => router.back()}>
+        <Text style={styles.button}>Back</Text>
+      </TouchableOpacity>
     </KeyboardAvoidingView>
   );
 };
 
 export default staff;
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "50%",
-    alignItems: "50%",
-    flex: 1,
-  },
-});

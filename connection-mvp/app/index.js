@@ -1,32 +1,20 @@
 import { Link } from "expo-router";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { View, Image, Text } from "react-native";
+import { styles } from "./login-styles";
 
 export default function Page() {
   return (
     <View style={styles.container}>
-      <View style={styles.main}>
-        <Text style={styles.title}>Let's get connected!</Text>
-      </View>
-      <Link href="/loved-one">Loved One</Link>
-      <Link href="/staff">Staff</Link>
+      <Image style={styles.logo} source={require("./connection.png")} />
+      <Text style={styles.welcome}>
+        Please choose one of the log in options below.
+      </Text>
+      <Link href="/loved-one" style={styles.button}>
+        Loved One
+      </Link>
+      <Link href="/staff" style={styles.button}>
+        Staff
+      </Link>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    padding: 24,
-  },
-  main: {
-    flex: 1,
-    maxWidth: 960,
-    marginHorizontal: "auto",
-  },
-  title: {
-    marginTop: "25%",
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-});
