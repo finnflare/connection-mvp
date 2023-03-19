@@ -17,7 +17,7 @@ import { useState, useEffect } from "react";
 // Importing necessary firebase methods
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 // Using exported "auth" instance b/c, if don't, might not initialize firebase
-import { auth } from "../firebaseConfig";
+import { auth } from "../../firebaseConfig";
 
 // This screen is an exact copy of loved-one.js, but the words and future routings are changed
 // STE is a special attribute to TI to make the chars non-visible when inputting
@@ -32,7 +32,7 @@ const lovedOne = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        router.push("/staff");
+        router.push("../loved-one-in/loved-one-home");
       }
     });
 
