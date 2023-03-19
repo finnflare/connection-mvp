@@ -11,6 +11,9 @@ import {
 import { styles } from "./login-styles";
 import { useRouter } from "expo-router";
 
+// This screen is an exact copy of loved-one.js, but the words and future routings are changed
+
+// Staff log in screen
 const staff = () => {
   const router = useRouter();
 

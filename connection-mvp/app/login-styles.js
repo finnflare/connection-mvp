@@ -1,15 +1,20 @@
 import { StyleSheet } from "react-native";
 
+// This stylesheet covers the welcome and log in screens styling
+
 const styles = StyleSheet.create({
+  // Container (main)
   container: {
     justifyContent: "flex-start",
     alignItems: "center",
     flex: 1,
     marginTop: 10,
   },
+  // An easy style for margin on top
   field: {
     marginTop: 25,
   },
+  // Style of text input fields
   input: {
     backgroundColor: "#397478",
     height: 30,
@@ -22,10 +27,12 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     color: "#d5e7e7",
   },
+  // Logo (photo) style
   logo: {
     resizeMode: "contain",
     width: "85%",
   },
+  // Indicator (staff/loved one) style
   indicator: {
     fontSize: 32,
     borderWidth: 10,
@@ -38,10 +45,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#d5e7e7",
     overflow: "hidden",
   },
+  // Style for the log in and back buttons
   button: {
     color: "#67a0a1",
     fontSize: 24,
   },
+  // Style for the welcome prompt
   welcome: {
     fontSize: 20,
     flex: 0.75,
