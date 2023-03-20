@@ -1,3 +1,5 @@
+// KAV is a special component to make sure the keyboard doesn't cover the input fields
+// TO is a component standing in as a button, but it can be traditionally styled (onPress is used on TO)
 import {
   Text,
   TextInput,
@@ -9,44 +11,45 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { styles } from "./login-styles";
+// This gives the router method, returning the current router, which can be used for navigation in the file-system
 import { useRouter } from "expo-router";
-import { useState } from "react";
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-} from "firebase/auth";
-import { auth, db } from "../../firebaseConfig";
-import { doc, setDoc } from "firebase/firestore";
+import { useState, useEffect } from "react";
+// Importing necessary firebase auth methods
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+// Using exported "auth" instance b/c, if don't, might not initialize firebase
+import { auth } from "../../firebaseConfig";
+// Importing necessary firestore methods
+import { collection, getDocs } from "firebase/firestore";
 
-// This screen is almost an exact copy of the other two log in screens, but it is used for administrational registrations
+// This screen is an exact copy of staff.js & loved-one.js, but the words and future routings are changed
+// STE is a special attribute to TI to make the chars non-visible when inputting
 
-// Admin user registration screen
-const Admin = () => {
+// Loved ones log in screen
+const admin = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // Signing up a new user
-  // If the sign up is successful, routing the admin back to the welcome screen
-  const handleLovedOneSignUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        setDoc(doc(db, "loved-one", auth.currentUser.uid), {
-          email: email,
+  // Listening for user
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        router.push({
+          pathname: "../admin-in/admin-home",
+          params: { email: auth.email },
         });
-        router.back();
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
-  };
+      }
+    });
 
-  const handleStaffSignUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
+    return unsubscribe;
+  }, []);
+
+  // Checking the log in credentials
+  const handleLogIn = () => {
+    signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        setDoc(doc(db, "staff", auth.currentUser.uid), { email: email });
-        router.back();
+        const mail = email;
+        const user = userCredential.user;
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -77,22 +80,14 @@ const Admin = () => {
           secureTextEntry
         />
       </View>
-      <TouchableOpacity style={styles.field} onPress={handleLovedOneSignUp}>
-        <Text style={styles.button}>Register New Loved One</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.field} onPress={handleStaffSignUp}>
-        <Text style={styles.button}>Register New Staff</Text>
+      <TouchableOpacity style={styles.field} onPress={handleLogIn}>
+        <Text style={styles.button}>Log in</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.field} onPress={() => router.back()}>
         <Text style={styles.button}>Back</Text>
       </TouchableOpacity>
-      <Text style={styles.warning}>
-        If the registration is successful, you will be routed back to the main
-        screen. User data can be managed on the Firebase Authentication &
-        Firestore--Database Consoles.
-      </Text>
     </KeyboardAvoidingView>
   );
 };
 
-export default Admin;
+export default admin;

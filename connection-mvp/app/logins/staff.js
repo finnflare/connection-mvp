@@ -21,7 +21,7 @@ import { auth } from "../../firebaseConfig";
 // Importing necessary firestore methods
 import { collection, getDocs } from "firebase/firestore";
 
-// This screen is an exact copy of loved-one.js, but the words and future routings are changed
+// This screen is an exact copy of loved-one.js & admin.js, but the words and future routings are changed
 // STE is a special attribute to TI to make the chars non-visible when inputting
 
 // Staff log in screen
