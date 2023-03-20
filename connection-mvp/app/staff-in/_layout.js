@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, db } from "../../firebaseConfig";
-import { Slot, useRouter } from "expo-router";
+import { Tabs, useRouter } from "expo-router";
 import { getDoc, doc } from "firebase/firestore";
+import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 
 // This layout only allows authenticated users to access the staff-in folder
 
@@ -43,5 +44,38 @@ export default function staffIn() {
   // Calling the staffV function, which checks verification of a staff user
   staffV();
   // If user is authenticated, give access to the directory
-  return <Slot />;
+  // Also organize the directory with a tab navigator and exit button on initial page
+  return (
+    <Tabs
+      initialRouteName="staff-home"
+      screenOptions={{
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: "#cc5500",
+      }}
+    >
+      <Tabs.Screen
+        name="staff-home"
+        options={{
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="home" size={24} color={color} />
+          ),
+          title: "Home",
+          headerLeft: () => (
+            <Ionicons
+              name="exit"
+              size={24}
+              color="black"
+              left={15}
+              onPress={() => {
+                signOut(auth)
+                  .then(() => {})
+                  .catch((error) => {});
+                route.push("");
+              }}
+            />
+          ),
+        }}
+      />
+    </Tabs>
+  );
 }

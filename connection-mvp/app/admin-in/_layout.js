@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, db } from "../../firebaseConfig";
-import { Slot, useRouter } from "expo-router";
+import { Slot, useRouter, Tabs, Stack } from "expo-router";
 import { getDoc, doc } from "firebase/firestore";
+import { FontAwesome5, MaterialIcons, Ionicons } from "@expo/vector-icons";
+import { Button } from "react-native";
 
 // This layout only allows authenticated users to access the admin-in folder
 
@@ -43,5 +45,47 @@ export default function adminIn() {
   // Calling the adminV function, which checks verification of a admin user
   adminV();
   // If user is authenticated, give access to the directory
-  return <Slot />;
+  // Also organize the directory with a tab navigator and exit button on initial page
+  return (
+    <Tabs
+      initialRouteName="admin-home"
+      screenOptions={{
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: "#cc5500",
+      }}
+    >
+      <Tabs.Screen
+        name="admin-home"
+        options={{
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="home" size={24} color={color} />
+          ),
+          title: "Home",
+          headerLeft: () => (
+            <Ionicons
+              name="exit"
+              size={24}
+              color="black"
+              left={15}
+              onPress={() => {
+                signOut(auth)
+                  .then(() => {})
+                  .catch((error) => {});
+                route.push("");
+              }}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="register-user"
+        options={{
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 name="check" size={24} color={color} />
+          ),
+          title: "Register",
+        }}
+      />
+    </Tabs>
+  );
 }

@@ -1,4 +1,4 @@
-/*import {
+import {
   Text,
   TextInput,
   View,
@@ -7,8 +7,9 @@
   Image,
   Button,
   TouchableOpacity,
+  Alert,
 } from "react-native";
-import { styles } from "./login-styles";
+import { styles } from "./register-styles";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
@@ -34,11 +35,12 @@ const register = () => {
         setDoc(doc(db, "loved-one", auth.currentUser.uid), {
           email: email,
         });
-        router.back();
+        openLoveSuccessAlert(email);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        openFailAlert(email);
       });
   };
 
@@ -46,18 +48,22 @@ const register = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setDoc(doc(db, "staff", auth.currentUser.uid), { email: email });
-        router.back();
+        openStaffSuccessAlert(email);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        openFailAlert(email);
       });
   };
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <Image style={styles.logo} source={require("./connection.png")} />
-      <Text style={styles.indicator}>Admin</Text>
+      <Text style={styles.warning}>
+        Registering a new user will populate that user on the Firebase
+        dashboard. That user will also be added to the Firestore Database. Both
+        of these dashboards can be managed on the Firebase console.
+      </Text>
       <View style={styles.field}>
         <TextInput
           style={styles.input}
@@ -77,22 +83,44 @@ const register = () => {
           secureTextEntry
         />
       </View>
-      <TouchableOpacity style={styles.field} onPress={handleLovedOneSignUp}>
+      <TouchableOpacity
+        style={styles.buttonField}
+        onPress={handleLovedOneSignUp}
+      >
         <Text style={styles.button}>Register New Loved One</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.field} onPress={handleStaffSignUp}>
+      <TouchableOpacity style={styles.buttonField} onPress={handleStaffSignUp}>
         <Text style={styles.button}>Register New Staff</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.field} onPress={() => router.back()}>
-        <Text style={styles.button}>Back</Text>
-      </TouchableOpacity>
-      <Text style={styles.warning}>
-        If the registration is successful, you will be routed back to the main
-        screen. User data can be managed on the Firebase Authentication &
-        Firestore--Database Consoles.
-      </Text>
+      <TouchableOpacity
+        style={styles.buttonField}
+        onPress={() => router.back()}
+      ></TouchableOpacity>
     </KeyboardAvoidingView>
   );
 };
 
-export default register;*/
+const openLoveSuccessAlert = (email) => {
+  Alert.alert(
+    "Success",
+    "User with email: " + email + " has been populated as a loved one."
+  );
+};
+
+const openStaffSuccessAlert = (email) => {
+  Alert.alert(
+    "Success",
+    "User with email: " + email + " has been populated as a staff member."
+  );
+};
+
+const openFailAlert = (email) => {
+  Alert.alert(
+    "Error",
+    "User with email: " +
+      email +
+      " is already populated as a user or invalid syntax was inputted."
+  );
+};
+
+export default register;
